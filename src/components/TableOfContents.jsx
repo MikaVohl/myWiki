@@ -10,16 +10,16 @@ function TableOfContents() {
     }, []);
 
     return (
-        <div>
-            <h2>Pages</h2>
+        <nav>
+            <h2 className="text-2xl">Pages</h2>
             <ul>
                 {pagenames.map((page, index) => (
-                    <li key={index}>
+                    <li key={index} className="my-2 text-blue-600 hover:underline">
                         <a href={`/wiki/${page.replace(" ", "_")}`}>{page}</a>
                     </li>
                 ))}
             </ul>
-        </div>
+        </nav>
     )
 }
 
