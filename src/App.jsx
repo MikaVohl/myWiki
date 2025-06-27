@@ -1,22 +1,15 @@
 import './App.css'
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Page from './pages/Page';
 
 function App() {
 
-  const [content, setContent] = React.useState('');
-
-  React.useEffect(() => {
-    fetch('/pageStore/myWiki.md')
-      .then(response => response.text())
-      .then(text => setContent(text));
-  }, []);
-
   return (
     <>
-      <div id="article">
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </div>
+      <Routes>
+        <Route path="/wiki/:pageName" element={<Page />} />
+        <Route path="*" element={<Navigate to="/wiki/myWiki" replace />} />
+      </Routes>
     </>
   )
 }

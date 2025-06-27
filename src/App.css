@@ -11,8 +11,12 @@ h1, h2, h3, h4 {
   margin-bottom: 1em;
 }
 
-#article {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
+h1 {
+  font-size: 2em;
+}
+h2 {
+  font-size: 1.5em;
+}
+h3 {
+  font-size: 1.2em;
 }
