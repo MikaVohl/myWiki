@@ -2,7 +2,10 @@ body {
   font-family: sans-serif;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: "Linux Libertine", Georgia, Times, "Source Serif Pro", serif;
   font-weight: 400;
 
@@ -10,13 +13,3 @@ h1, h2, h3, h4 {
   padding-bottom: 0.1em;
   margin-bottom: 1em;
 }
-
-/* h1 {
-  font-size: 2em;
-}
-h2 {
-  font-size: 1.5em;
-}
-h3 {
-  font-size: 1.2em;
-} */

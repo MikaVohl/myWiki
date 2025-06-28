@@ -1,13 +1,13 @@
-import './App.css';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Page from './pages/Page';
-import NewPage from './pages/NewPage';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import Header from './components/Header';
-import { useEffect, useState } from 'react';
-import { supabase } from './supabaseClient';
-import TableOfContents from './components/TableOfContents';
+import "./App.css";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Page from "./pages/Page";
+import NewPage from "./pages/NewPage";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Header from "./components/Header";
+import { useEffect, useState } from "react";
+import { supabase } from "./supabaseClient";
+import TableOfContents from "./components/TableOfContents";
 
 function App() {
   const [session, setSession] = useState(null);
@@ -17,7 +17,9 @@ function App() {
       setSession(session);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_, session) => {
       setSession(session);
     });
 
@@ -29,12 +31,13 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white items-center max-w-7xl mx-auto gap-5">
-        <Header signOut={signOut} />
-      <div id="page" className="flex flex-row bg-white flex-1 min-h-0 w-full gap-5">
-        <div id="toc" className="w-52 p-5 bg-gray-100 rounded-md shadow-sm">
-          <TableOfContents />
-        </div>
+    <div className="min-h-screen flex flex-col bg-white items-center max-w-7xl mx-auto">
+      <Header signOut={signOut} />
+      <div
+        id="page"
+        className="flex flex-row bg-white flex-1 min-h-0 w-full gap-5"
+      >
+        <TableOfContents />
         <Routes>
           <Route path="/new_page" element={<NewPage session={session} />} />
           <Route path="/wiki/:pageURL" element={<Page session={session} />} />
@@ -47,9 +50,9 @@ function App() {
 }
 
 async function signOut() {
-  const { error } = await supabase.auth.signOut();   // ← await result
+  const { error } = await supabase.auth.signOut(); // ← await result
   if (error) {
-    console.error('Sign-out failed:', error.message);
+    console.error("Sign-out failed:", error.message);
   }
 }
 
