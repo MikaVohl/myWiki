@@ -1,7 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import TableOfContents from "../components/TableOfContents";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
@@ -24,8 +23,8 @@ function Home() {
 
 
     return (
-        <div className="flex-1 max-w-4xl mx-auto p-4">
-            <article className="prose prose-stone w-full">
+        <div className="flex-1 mx-auto p-4">
+            <article className="prose prose-stone w-full max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
                     {content}
                 </ReactMarkdown>

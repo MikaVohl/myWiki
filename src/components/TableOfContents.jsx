@@ -15,7 +15,7 @@ function TableOfContents() {
                 <h2 className="text-2xl">Pages</h2>
                 <ul>
                     {pagenames.map((page, index) => (
-                        <li key={index} className="my-2 text-blue-600 hover:underline">
+                        <li key={index} className="my-3 text-blue-600 hover:underline hover:text-blue-700">
                             <a href={`/wiki/${page.replace(" ", "_")}`}>{page}</a>
                         </li>
                     ))}

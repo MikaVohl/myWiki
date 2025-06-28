@@ -68,7 +68,7 @@ function Page({ session }) {
 
 
     return (
-        <div className="flex-1 max-w-4xl mx-auto p-4">
+        <div className="flex-1 mx-auto p-4">
             <div className="mb-4">
                 <button
                     onClick={() => setIsEditing(e => !e)}

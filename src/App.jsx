@@ -29,11 +29,11 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header signOut={signOut} />
-      <div id="page" className="flex flex-row bg-white flex-1 min-h-0">
-        <div id="toc" className="w-52 p-5 bg-gray-100 rounded-md m-4 shadow-sm">
-            <TableOfContents />
+    <div className="min-h-screen flex flex-col bg-white items-center max-w-7xl mx-auto gap-5">
+        <Header signOut={signOut} />
+      <div id="page" className="flex flex-row bg-white flex-1 min-h-0 w-full gap-5">
+        <div id="toc" className="w-52 p-5 bg-gray-100 rounded-md shadow-sm">
+          <TableOfContents />
         </div>
         <Routes>
           <Route path="/new_page" element={<NewPage session={session} />} />
