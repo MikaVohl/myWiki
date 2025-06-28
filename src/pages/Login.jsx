@@ -28,7 +28,7 @@ export default function Login() {
     if (authError) {
       setError(authError.message);
     } else if (mode === "signUp") {
-      setError("Almost there — check your inbox to confirm your email.");
+      setError("Almost there - check your inbox to confirm your email.");
     }
     setLoading(false);
   };
