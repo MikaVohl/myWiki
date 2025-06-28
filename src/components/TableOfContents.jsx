@@ -21,7 +21,7 @@ function TableOfContents() {
                     ))}
                 </ul>
             </div>
-            <a href="/wiki/new_page" className="bg-gray-200 p-2 rounded mb-2">Create New Page</a>
+            <a href="/new_page" className="bg-gray-200 p-2 rounded mb-2 text-center">Create New Page</a>
         </nav>
     )
 }

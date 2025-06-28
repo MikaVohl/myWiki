@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
@@ -6,32 +6,36 @@ import rehypeKatex from "rehype-katex";
 import { supabase } from "../supabaseClient";
 
 function Page({ session }) {
-    const { pageName } = useParams();
+    const { pageURL } = useParams(); // contains underscores instead of spaces
+    const pageName = useMemo(
+        () => (pageURL ? decodeURIComponent(pageURL).replace(/_/g, " ") : ""),
+        [pageURL]
+    );
+    const [pageID, setPageID] = React.useState(null);
     const [content, setContent] = React.useState('');
     const [draftContent, setDraftContent] = React.useState('');
     const [isEditing, setIsEditing] = React.useState(false);
 
     useEffect(() => {
-        async function loadPage() {
-            if (pageName === 'new_page') {
-                setContent('');
-                setDraftContent('');
-                return;
-            }
-            const { data } = await supabase
-                .from('pages')
-                .select('content')
-                .eq('name', pageName)
-                .single();
+        if (!pageName) return;
+            (async () => {
+        const { data, error } = await supabase
+            .from("pages")
+            .select("content, id")
+            .eq("name", pageName)
+            .single();
 
-            if (data && data.content) {
-                setContent(data.content);
-            }
+        if (error) {
+            console.error(error);
+            window.location.href = "/";
+            return;
         }
-        loadPage();
+        if (data) {
+            setContent(data.content ?? "");
+            setPageID(data.id);
+        }
+        })();
     }, [pageName]);
-
-    const user = session?.user;
 
     useEffect(() => {
         setDraftContent(content);
@@ -42,12 +46,15 @@ function Page({ session }) {
     }, [isEditing, content]);
 
     const saveEdits = async () => {
+        const user = session?.user;
         if (!user) return console.error('No active session - cannot save');
         
         try {
             const { error } = await supabase
             .from('pages')
-            .upsert({ owner_id: user.id, name: pageName, content: draftContent })
+            .update({ owner_id: user.id, name: pageName, content: draftContent })
+            .eq('id', pageID);
+
             if (error) {
                 console.error('Supabase error:', error);
                 return;
@@ -86,9 +93,6 @@ function Page({ session }) {
                         onChange={e => setDraftContent(e.target.value)}
                     />
                     <article className="prose prose-stone md:w-1/2 p-2 overflow-auto">
-                        <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-                            {`# ${pageName}`}
-                        </ReactMarkdown>
                         <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
                             {draftContent}
                         </ReactMarkdown>

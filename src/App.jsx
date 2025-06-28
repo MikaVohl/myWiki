@@ -1,5 +1,5 @@
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Page from './pages/Page';
 import NewPage from './pages/NewPage';
 import Login from './pages/Login';
@@ -36,9 +36,10 @@ function App() {
             <TableOfContents />
         </div>
         <Routes>
-          <Route path="/wiki/new_page" element={<NewPage session={session} />} />
-          <Route path="/wiki/:pageName" element={<Page session={session} />} />
-          <Route path="*" element={<Home />} />
+          <Route path="/new_page" element={<NewPage session={session} />} />
+          <Route path="/wiki/:pageURL" element={<Page session={session} />} />
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </div>

@@ -14,7 +14,7 @@ function NewPage({ session }) {
     try {
       const { error } = await supabase
         .from('pages')
-        .upsert({ owner_id: user.id, name: title, content });
+        .insert({ owner_id: user.id, name: title, content: content });
       if (error) {
         console.error('Supabase error:', error);
         return;
