@@ -17,6 +17,12 @@ function Page({ session }) {
   const [isEditing, setIsEditing] = React.useState(false);
 
   useEffect(() => {
+    if (pageName) {
+      document.title = `myWiki - ${pageName}`;
+    }
+  }, [pageName]);
+
+  useEffect(() => {
     if (!pageName) return;
     (async () => {
       const { data, error } = await supabase
