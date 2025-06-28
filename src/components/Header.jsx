@@ -4,7 +4,7 @@ function Header({ signOut }) {
     return (
         <header>
             <div className="flex flex-row justify-between items-center p-1">
-                <div className="flex flex-row items-center gap-2">
+                <div className="flex flex-row items-center gap-2 cursor-pointer" onClick={() => window.location.href = "/"}>
                     <img src="/delta.png" alt="Logo" className="logo w-10" />
                     <h1 className="text-3xl m-0" style={{ border: "none", margin: 0 }}>myWiki</h1>
                 </div>

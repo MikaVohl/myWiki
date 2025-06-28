@@ -25,7 +25,7 @@ function Home() {
 
     return (
         <div className="flex-1 max-w-4xl mx-auto p-4">
-            <article className="prose prose-stone">
+            <article className="prose prose-stone w-full">
                 <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
                     {content}
                 </ReactMarkdown>

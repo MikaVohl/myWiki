@@ -87,19 +87,26 @@ function Page({ session }) {
             </div>
             {isEditing ? (
                 <div className="flex flex-col md:flex-row gap-4">
-                    <textarea
-                        className="w-full md:w-1/2 min-h-[300px] p-2 resize-y"
-                        value={draftContent}
-                        onChange={e => setDraftContent(e.target.value)}
-                    />
-                    <article className="prose prose-stone md:w-1/2 p-2 overflow-auto">
-                        <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-                            {draftContent}
-                        </ReactMarkdown>
-                    </article>
+                    <div className="w-full md:w-1/2">
+                        <h1 className="text-3xl font-semibold mb-2">Page content</h1>
+                        <textarea
+                            className="w-full min-h-[300px] p-2 resize-y"
+                            value={draftContent}
+                            onChange={e => setDraftContent(e.target.value)}
+                            placeholder={`${pageName} is ...`}
+                        />
+                    </div>
+                    <div className="w-full md:w-1/2">
+                        <h1 className="text-3xl font-semibold mb-2">Preview</h1>
+                        <article className="prose prose-stone p-2 overflow-auto">
+                            <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+                                {draftContent}
+                            </ReactMarkdown>
+                        </article>
+                    </div>
                 </div>
             ) : (
-                <article className="prose prose-stone">
+                <article className="prose prose-stone w-full max-w-none">
                     <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
                         {`# ${pageName}`}
                     </ReactMarkdown>
