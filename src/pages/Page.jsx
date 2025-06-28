@@ -1,41 +1,78 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import TableOfContents from "../components/TableOfContents";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import { supabase } from "../supabaseClient";
 
-function Page() {
+function Page({ session }) {
     const { pageName } = useParams();
     const [content, setContent] = React.useState('');
     const [draftContent, setDraftContent] = React.useState('');
     const [isEditing, setIsEditing] = React.useState(false);
-    const url = `/pageStore/${pageName}.md`;
 
-    React.useEffect(() => {
-        const stored = localStorage.getItem(`page-${pageName}`);
-        if (stored) {
-            setContent(stored);
-        } else {
-            fetch(url)
-                .then(response => response.text())
-                .then(text => setContent(text));
+    useEffect(() => {
+        async function loadPage() {
+            if (pageName === 'new_page') {
+                setContent('');
+                setDraftContent('');
+                return;
+            }
+            const { data } = await supabase
+                .from('Pages')
+                .select('content')
+                .eq('name', pageName)
+                .single();
+
+            if (data && data.content) {
+                setContent(data.content);
+            }
         }
-    }, [pageName, url]);
+        loadPage();
+    }, [pageName]);
 
-    React.useEffect(() => {
+    const user = session?.user;
+
+    useEffect(() => {
         setDraftContent(content);
     }, [content]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setDraftContent(isEditing ? content : '');
-    }, [isEditing]);
+    }, [isEditing, content]);
 
-    function saveEdits() {
-        setContent(draftContent);
-        localStorage.setItem(`page-${pageName}`, draftContent);
-        setIsEditing(false);
-    }
+    const saveEdits = async () => {
+        if (!user) return console.error('No active session - cannot save');
+
+        console.log('Saving edits:', draftContent);
+        
+        try {
+            const { data } = await supabase
+            .from('Pages')
+            .upsert(
+                { owner_id: user.id, name: pageName, content: draftContent,
+                last_edited: new Date().toISOString() },
+                { onConflict: 'owner_id,name' }
+            )
+            .select()
+            .single()
+            .throwOnError();
+
+            if (error) {
+                console.error('Supabase error:', error);
+                return;
+            }
+            console.log('Save response:', data);
+
+            setContent(data.content);
+            setIsEditing(false);
+            console.log('Saved OK');
+        } catch (err) {
+            console.error('Network / client error:', err);
+        }
+    };
+
 
     return (
         <div id="page" className="flex flex-row min-h-screen bg-white">
