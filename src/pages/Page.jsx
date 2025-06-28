@@ -20,7 +20,7 @@ function Page({ session }) {
                 return;
             }
             const { data } = await supabase
-                .from('Pages')
+                .from('pages')
                 .select('content')
                 .eq('name', pageName)
                 .single();
@@ -44,30 +44,17 @@ function Page({ session }) {
 
     const saveEdits = async () => {
         if (!user) return console.error('No active session - cannot save');
-
-        console.log('Saving edits:', draftContent);
         
         try {
-            const { data } = await supabase
-            .from('Pages')
-            .upsert(
-                { owner_id: user.id, name: pageName, content: draftContent,
-                last_edited: new Date().toISOString() },
-                { onConflict: 'owner_id,name' }
-            )
-            .select()
-            .single()
-            .throwOnError();
-
+            const { data, error } = await supabase
+            .from('pages')
+            .upsert({ owner_id: user.id, name: pageName, content: draftContent })
             if (error) {
                 console.error('Supabase error:', error);
                 return;
             }
-            console.log('Save response:', data);
-
-            setContent(data.content);
+            setContent(draftContent);
             setIsEditing(false);
-            console.log('Saved OK');
         } catch (err) {
             console.error('Network / client error:', err);
         }

@@ -6,7 +6,6 @@ function TableOfContents() {
     React.useEffect(() => {
         getPages().then(pages => {
             setPagenames(pages);
-            console.log(pages);
         });
     }, []);
 
@@ -28,8 +27,7 @@ function TableOfContents() {
 }
 
 async function getPages() {
-    const { data } = await supabase.from('Pages').select('name');
-    console.log(data);
+    const { data } = await supabase.from('pages').select('name');
     if (data) {
         return data.map(p => p.name);
     }
