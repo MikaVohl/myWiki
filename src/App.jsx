@@ -1,10 +1,13 @@
-import './App.css'
+import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Page from './pages/Page';
+import NewPage from './pages/NewPage';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Header from './components/Header';
 import { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
+import TableOfContents from './components/TableOfContents';
 
 function App() {
   const [session, setSession] = useState(null);
@@ -26,15 +29,19 @@ function App() {
   }
 
   return (
-    <>
-      <div className="p-2 flex justify-end">
-        <button onClick={() => signOut()} className="text-blue-600">Sign Out</button>
+    <div className="min-h-screen flex flex-col">
+      <Header signOut={signOut} />
+      <div id="page" className="flex flex-row bg-white flex-1 min-h-0">
+        <div id="toc" className="w-52 p-5 bg-gray-100 rounded-md m-4 shadow-sm">
+            <TableOfContents />
+        </div>
+        <Routes>
+          <Route path="/wiki/new_page" element={<NewPage session={session} />} />
+          <Route path="/wiki/:pageName" element={<Page session={session} />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
       </div>
-      <Routes>
-        <Route path="/wiki/:pageName" element={<Page session={session} />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
-    </>
+    </div>
   );
 }
 
@@ -45,4 +52,4 @@ async function signOut() {
   }
 }
 
-export default App
+export default App;
