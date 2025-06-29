@@ -2,7 +2,7 @@ import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Page from "./pages/Page";
 import NewPage from "./pages/NewPage";
-import Login from "./pages/Login";
+import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import { useEffect, useState } from "react";
@@ -27,7 +27,7 @@ function App() {
   }, []);
 
   if (!session) {
-    return <Login />;
+    return <Auth />;
   }
 
   return (
