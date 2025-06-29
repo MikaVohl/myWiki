@@ -6,7 +6,9 @@ import rehypeKatex from "rehype-katex";
 import { supabase } from "../supabaseClient";
 
 function Page({ session }) {
-  const { pageURL } = useParams(); // contains underscores instead of spaces
+  const { username, pageURL } = useParams(); // contains underscores instead of spaces
+  console.log("Page URL:", pageURL);
+  console.log("Username:", username);
   const pageName = useMemo(
     () => (pageURL ? decodeURIComponent(pageURL).replace(/_/g, " ") : ""),
     [pageURL]

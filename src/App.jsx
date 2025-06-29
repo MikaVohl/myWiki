@@ -5,6 +5,7 @@ import NewPage from "./pages/NewPage";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import Header from "./components/Header";
+import Explore from "./pages/Explore";
 import { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
 import TableOfContents from "./components/TableOfContents";
@@ -41,6 +42,10 @@ function App() {
         <Routes>
           <Route path="/new_page" element={<NewPage session={session} />} />
           <Route path="/wiki/:pageURL" element={<Page session={session} />} />
+          <Route
+            path="/:username/:pageURL"
+            element={<Page session={session} />}
+          />
           <Route path="/explore" element={<Explore />} />
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Navigate to="/" replace />} />

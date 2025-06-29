@@ -1,4 +1,37 @@
+import { supabase } from "../supabaseClient";
+import React from "react";
+
 function Header({ signOut }) {
+  const [user, setUser] = React.useState(null);
+  const [username, setUsername] = React.useState("");
+  React.useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    fetchUser();
+  }, []);
+
+  React.useEffect(() => {
+    if (user) {
+      const fetchUsername = async () => {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("username")
+          .eq("id", user.id)
+          .single();
+        if (error) {
+          console.error("Error fetching username:", error);
+        } else {
+          setUsername(data.username);
+        }
+      };
+      fetchUsername();
+    }
+  }, [user]);
+
   return (
     <header className="flex flex-row justify-between items-center p-2 w-full">
       <div
@@ -30,12 +63,15 @@ function Header({ signOut }) {
           Explore
         </a>
       </nav>
-      <button
-        onClick={() => signOut()}
-        className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
-      >
-        Sign Out
-      </button>
+      <div>
+        {username}
+        <button
+          onClick={() => signOut()}
+          className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
+        >
+          Sign Out
+        </button>
+      </div>
     </header>
   );
 }
