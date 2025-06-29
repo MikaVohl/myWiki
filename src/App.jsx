@@ -41,6 +41,7 @@ function App() {
         <Routes>
           <Route path="/new_page" element={<NewPage session={session} />} />
           <Route path="/wiki/:pageURL" element={<Page session={session} />} />
+          <Route path="/explore" element={<Explore />} />
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

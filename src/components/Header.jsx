@@ -10,6 +10,26 @@ function Header({ signOut }) {
           myWiki
         </h1>
       </div>
+      <nav className="flex flex-row gap-4">
+        <a
+          href="/new_page"
+          className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
+        >
+          New Page
+        </a>
+        <a
+          href="/"
+          className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
+        >
+          Home
+        </a>
+        <a
+          href="/explore"
+          className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
+        >
+          Explore
+        </a>
+      </nav>
       <button
         onClick={() => signOut()}
         className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
