@@ -1,11 +1,11 @@
 # myWiki
 
-**MyWiki** is a personal journey to fill out pages of Wikipedia topics with your own knowledge. It helps you build broad and deep understanding on any topics you choose, and gamifies it by adding a sort of progression or competition to the task.
+**myWiki** is a personal journey to fill out pages of Wikipedia topics with your own knowledge. It helps you build broad and deep understanding on any topics you choose, and gamifies it by adding a sense of progression to the task.
 
-## Creator
+## Source Code
 
-Mika Vohl created myWiki
+The complete source code for myWiki is available at **[github.com/MikaVohl/myWiki](https://github.com/MikaVohl/myWiki)**.
 
 ## Mission
 
-Just learn things
+**Just learn things**
