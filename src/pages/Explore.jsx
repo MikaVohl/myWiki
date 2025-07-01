@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 export default function Explore() {
@@ -6,7 +7,7 @@ export default function Explore() {
   const [error, setError] = React.useState(null);
 
   React.useEffect(() => {
-    (async () => {
+    async function fetchPages() {
       const { data, error } = await supabase
         .from("pages")
         .select(
@@ -23,7 +24,8 @@ export default function Explore() {
         return;
       }
       setPages(data);
-    })();
+    }
+    fetchPages();
   }, []);
 
   if (error) {
@@ -44,14 +46,14 @@ export default function Explore() {
             key={name}
             className="flex flex-row items-center justify-between p-3 border rounded hover:bg-gray-50"
           >
-            <a
-              href={`/${owner?.username}/${encodeURIComponent(
+            <Link
+              to={`/${owner?.username}/${encodeURIComponent(
                 name.replace(/\s+/g, "_")
               )}`}
               className="text-blue-600 hover:underline"
             >
               {name}
-            </a>
+            </Link>
             <span className="text-gray-600 text-sm">
               {owner ? `by ${owner.username}` : "Unknown author"}
             </span>

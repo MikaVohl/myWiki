@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { supabase } from "../supabaseClient";
 
 function Page({ session }) {
+  const navigate = useNavigate();
   const { username, pageURL } = useParams(); // contains underscores instead of spaces
   const pageName = useMemo(
     () => (pageURL ? decodeURIComponent(pageURL).replace(/_/g, " ") : ""),
@@ -27,7 +28,7 @@ function Page({ session }) {
   useEffect(() => {
     if (!pageName) return;
 
-    (async () => {
+    async function fetchPage() {
       let ownerIdToUse = user?.id;
       if (username) {
         const { data: profile, error: profileErr } = await supabase
@@ -38,7 +39,7 @@ function Page({ session }) {
 
         if (profileErr || !profile) {
           console.error("Profile not found:", profileErr);
-          window.location.href = "/";
+          navigate("/");
           return;
         }
         setOwnerID(profile.id);
@@ -54,18 +55,16 @@ function Page({ session }) {
 
       if (pageErr || !page) {
         console.error("Page not found:", pageErr);
-        window.location.href = "/";
+        navigate("/");
         return;
       }
 
       setContent(page.content ?? "");
       setPageID(page.id);
-    })();
-  }, [pageName, username]);
+    }
 
-  useEffect(() => {
-    setDraftContent(content);
-  }, [content]);
+    fetchPage();
+  }, [pageName, username, user?.id, navigate]);
 
   useEffect(() => {
     setDraftContent(isEditing ? content : "");
@@ -105,7 +104,7 @@ function Page({ session }) {
         console.error("Supabase error:", error);
         return;
       }
-      window.location.href = "/";
+      navigate("/");
     } catch (err) {
       console.error("Network / client error:", err);
     }

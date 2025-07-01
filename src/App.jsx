@@ -31,9 +31,16 @@ function App() {
     return <Auth />;
   }
 
+  async function handleSignOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Sign-out failed:", error.message);
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-white items-center max-w-7xl mx-auto">
-      <Header signOut={signOut} />
+      <Header signOut={handleSignOut} session={session} />
       <div
         id="page"
         className="flex flex-row bg-white flex-1 min-h-0 w-full gap-5"
@@ -53,13 +60,6 @@ function App() {
       </div>
     </div>
   );
-}
-
-async function signOut() {
-  const { error } = await supabase.auth.signOut(); // ← await result
-  if (error) {
-    console.error("Sign-out failed:", error.message);
-  }
 }
 
 export default App;

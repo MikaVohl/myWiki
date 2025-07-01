@@ -1,18 +1,11 @@
 import { supabase } from "../supabaseClient";
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-function Header({ signOut }) {
-  const [user, setUser] = React.useState(null);
+function Header({ signOut, session }) {
+  const navigate = useNavigate();
+  const user = session?.user;
   const [username, setUsername] = React.useState("");
-  React.useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    fetchUser();
-  }, []);
 
   React.useEffect(() => {
     if (user) {
@@ -36,7 +29,7 @@ function Header({ signOut }) {
     <header className="flex flex-row justify-between items-center p-2 w-full">
       <div
         className="flex flex-row items-center gap-2 cursor-pointer"
-        onClick={() => (window.location.href = "/")}
+        onClick={() => navigate("/")}
       >
         <img src="/delta.png" alt="Logo" className="logo w-10" />
         <h1 className="text-3xl m-0" style={{ border: "none", margin: 0 }}>
@@ -44,24 +37,24 @@ function Header({ signOut }) {
         </h1>
       </div>
       <nav className="flex flex-row gap-4">
-        <a
-          href="/new_page"
+        <Link
+          to="/new_page"
           className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
         >
           New Page
-        </a>
-        <a
-          href="/"
+        </Link>
+        <Link
+          to="/"
           className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
         >
           Home
-        </a>
-        <a
-          href="/explore"
+        </Link>
+        <Link
+          to="/explore"
           className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
         >
           Explore
-        </a>
+        </Link>
       </nav>
       <div>
         {username}

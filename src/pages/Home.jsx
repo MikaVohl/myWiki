@@ -10,14 +10,16 @@ function Home() {
   const url = `/pageStore/myWiki.md`;
 
   React.useEffect(() => {
-    fetch(url)
-      .then((response) => response.text())
-      .then((data) => {
+    async function fetchContent() {
+      try {
+        const response = await fetch(url);
+        const data = await response.text();
         setContent(data);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching page content:", error);
-      });
+      }
+    }
+    fetchContent();
   }, [pageName, url]);
 
   return (

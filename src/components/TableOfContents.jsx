@@ -1,14 +1,19 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 function TableOfContents({ session }) {
   const user = session?.user;
   const [pagenames, setPagenames] = React.useState([]);
+
   React.useEffect(() => {
-    getPages(user).then((pages) => {
+    if (!user) return;
+    async function fetchPages() {
+      const pages = await getPages(user);
       setPagenames(pages);
-    });
-  }, []);
+    }
+    fetchPages();
+  }, [user]);
 
   return (
     <div id="toc" className="w-52 p-5 pt-8">
@@ -16,36 +21,47 @@ function TableOfContents({ session }) {
         <div>
           <h2 className="text-2xl">My Pages</h2>
           <ul>
-            {pagenames.map((page, index) => (
+            {pagenames.map((page) => (
               <li
-                key={index}
-                className="my-3 text-blue-600 hover:underline hover:text-blue-700 leading-5"
+                key={page}
+                className="my-3 leading-5"
               >
-                <a href={`/wiki/${page.replace(" ", "_")}`}>{page}</a>
+                <Link
+                  className="text-blue-600 hover:underline hover:text-blue-700"
+                  to={`/wiki/${page.replace(" ", "_")}`}
+                >
+                  {page}
+                </Link>
               </li>
             ))}
           </ul>
         </div>
-        <a
-          href="/new_page"
+        <Link
+          to="/new_page"
           className="bg-gray-200 p-2 rounded mt-3 text-center"
         >
           Create New Page
-        </a>
+        </Link>
       </nav>
     </div>
   );
 }
 
 async function getPages(user) {
-  const { data } = await supabase
-    .from("pages")
-    .select("name")
-    .eq("owner_id", user?.id);
-  if (data) {
-    return data.map((p) => p.name);
+  try {
+    const { data, error } = await supabase
+      .from("pages")
+      .select("name")
+      .eq("owner_id", user?.id);
+    if (error) {
+      console.error("Error fetching pages:", error.message);
+      return [];
+    }
+    return (data ?? []).map((p) => p.name);
+  } catch (err) {
+    console.error("Network error while loading pages:", err);
+    return [];
   }
-  return [];
 }
 
 export default TableOfContents;
