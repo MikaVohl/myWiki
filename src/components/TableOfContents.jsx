@@ -40,7 +40,7 @@ export default function TableOfContents({
         </div>
         <Link
           to="/new_page"
-          className="bg-gray-200 p-2 rounded mt-3 text-center"
+          className="bg-gray-100 p-2 rounded mt-3 text-center hover:bg-gray-200"
         >
           Create New Page
         </Link>

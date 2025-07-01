@@ -36,31 +36,30 @@ export default function Header({ signOut, session }) {
           myWiki
         </h1>
       </div>
-      <nav className="flex flex-row gap-4">
-        <Link
-          to="/new_page"
-          className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
-        >
+      <nav className="flex flex-row gap-2 text-xl">
+        <Link to="/new_page" className="rounded p-2 px-4 hover:bg-gray-100">
           New Page
         </Link>
-        <Link
-          to="/"
-          className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
-        >
+        <Link to="/" className="rounded p-2 px-4 hover:bg-gray-100">
           Home
         </Link>
-        <Link
-          to="/explore"
-          className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
-        >
+        <Link to="/explore" className="rounded p-2 px-4 hover:bg-gray-100">
           Explore
         </Link>
       </nav>
-      <div>
-        {username}
+      <div className="flex flex-row items-center gap-2">
+        <div className="flex items-center">
+          <i
+            className="material-symbols-outlined text-gray-800"
+            style={{ fontVariationSettings: "'FILL' 1", fontSize: "1.3rem" }}
+          >
+            person
+          </i>
+          {username}
+        </div>
         <button
           onClick={() => signOut()}
-          className="text-blue-600 text-lg rounded p-2 hover:bg-gray-100"
+          className="rounded p-2 hover:bg-gray-100"
         >
           Sign Out
         </button>

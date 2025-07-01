@@ -147,28 +147,22 @@ export default function Page({ session, setPageChanged }) {
               </>
             )}
           </div>
-        )) || <div />}
+        )) || <br />}
       </div>
       {isEditing ? (
         <div className="flex flex-col md:flex-row gap-6 min-h-[60vh]">
-          <div className="w-full md:w-1/2 flex flex-col gap-4">
+          <div className="w-full md:w-1/2 flex flex-col gap-2">
             <div className="flex flex-col">
-              <label className="mb-1 text-lg font-semibold" htmlFor="title">
-                Title
-              </label>
               <input
                 id="title"
                 type="text"
-                className="w-full rounded border-2 border-gray-300 p-2 text-3xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded border-2 border-gray-300 p-1 text-3xl font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={draftName}
                 onChange={(e) => setDraftName(e.target.value)}
                 placeholder="Page title"
               />
             </div>
             <div className="flex flex-col flex-1 min-h-0">
-              <label className="mb-1 text-lg font-semibold" htmlFor="content">
-                Content (Markdown)
-              </label>
               <textarea
                 id="content"
                 className="flex-1 rounded border-2 border-gray-300 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -179,7 +173,7 @@ export default function Page({ session, setPageChanged }) {
             </div>
           </div>
           <div className="w-full md:w-1/2 flex flex-col gap-4">
-            <article className="prose prose-stone flex-1 min-h-0 overflow-auto rounded p-4 bg-white">
+            <article className="prose prose-stone flex-1 min-h-0 overflow-auto rounded bg-white">
               <ReactMarkdown
                 remarkPlugins={[remarkMath]}
                 rehypePlugins={[rehypeKatex]}
@@ -190,7 +184,7 @@ export default function Page({ session, setPageChanged }) {
                 remarkPlugins={[remarkMath]}
                 rehypePlugins={[rehypeKatex]}
               >
-                {draftContent || "_Nothing here yet…_"}
+                {draftContent || "Nothing here yet..."}
               </ReactMarkdown>
             </article>
           </div>
