@@ -40,7 +40,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white items-center max-w-7xl mx-auto">
+    <div className="min-h-screen flex flex-col bg-white items-center max-w-7xl mx-auto px-8">
       <Header signOut={handleSignOut} session={session} />
       <div
         id="page"

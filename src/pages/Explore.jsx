@@ -44,7 +44,7 @@ export default function Explore() {
         {pages.map(({ name, owner }) => (
           <li
             key={name}
-            className="flex flex-row items-center justify-between p-3 border rounded hover:bg-gray-50"
+            className="flex flex-row items-center justify-between p-4 border border-gray-200 rounded hover:bg-gray-50"
           >
             <Link
               to={`/${owner?.username}/${encodeURIComponent(
@@ -54,7 +54,7 @@ export default function Explore() {
             >
               {name}
             </Link>
-            <span className="text-gray-600 text-sm">
+            <span className="text-gray-500 text-sm">
               {owner ? `by ${owner.username}` : "Unknown author"}
             </span>
           </li>

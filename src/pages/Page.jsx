@@ -156,7 +156,7 @@ export default function Page({ session, setPageChanged }) {
               <input
                 id="title"
                 type="text"
-                className="w-full rounded border-2 border-gray-300 p-1 text-3xl font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded border-1 border-gray-300 p-1 text-3xl font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={draftName}
                 onChange={(e) => setDraftName(e.target.value)}
                 placeholder="Page title"
@@ -165,7 +165,7 @@ export default function Page({ session, setPageChanged }) {
             <div className="flex flex-col flex-1 min-h-0">
               <textarea
                 id="content"
-                className="flex-1 rounded border-2 border-gray-300 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 rounded border-1 border-gray-300 p-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={draftContent}
                 onChange={(e) => setDraftContent(e.target.value)}
                 placeholder={`${pageName} is …`}
