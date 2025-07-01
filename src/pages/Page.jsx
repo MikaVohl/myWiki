@@ -5,7 +5,7 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { supabase } from "../supabaseClient";
 
-function Page({ session }) {
+function Page({ session, setPageChanged }) {
   const navigate = useNavigate();
   const { username, pageURL } = useParams(); // contains underscores instead of spaces
   const pageName = useMemo(
@@ -104,6 +104,7 @@ function Page({ session }) {
         console.error("Supabase error:", error);
         return;
       }
+      setPageChanged();
       navigate("/");
     } catch (err) {
       console.error("Network / client error:", err);
@@ -111,7 +112,7 @@ function Page({ session }) {
   };
 
   return (
-    <div className="flex-1 mx-auto p-4 pt-0">
+    <div className="flex-1 mx-auto p-4 pt-0 mb-20">
       <div className="flex flex-row justify-between ">
         {((ownerID === user?.id || !username) && (
           <div className="flex gap-2">

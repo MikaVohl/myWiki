@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
-function NewPage({ session }) {
+function NewPage({ session, setPageChanged }) {
   const navigate = useNavigate();
   const user = session?.user;
   const [title, setTitle] = useState("");
@@ -18,6 +18,7 @@ function NewPage({ session }) {
         console.error("Supabase error:", error);
         return;
       }
+      setPageChanged();
       navigate(`/wiki/${name}`);
     } catch (err) {
       console.error("Network / client error:", err);

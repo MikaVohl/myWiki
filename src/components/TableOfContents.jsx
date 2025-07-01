@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
-function TableOfContents({ session }) {
+function TableOfContents({ session, pageChanged, setPageChanged }) {
   const user = session?.user;
   const [pagenames, setPagenames] = React.useState([]);
 
@@ -13,7 +13,8 @@ function TableOfContents({ session }) {
       setPagenames(pages);
     }
     fetchPages();
-  }, [user]);
+    setPageChanged(false);
+  }, [user, pageChanged]);
 
   return (
     <div id="toc" className="w-52 p-5 pt-8">
@@ -22,10 +23,7 @@ function TableOfContents({ session }) {
           <h2 className="text-2xl">My Pages</h2>
           <ul>
             {pagenames.map((page) => (
-              <li
-                key={page}
-                className="my-3 leading-5"
-              >
+              <li key={page} className="my-3 leading-5">
                 <Link
                   className="text-blue-600 hover:underline hover:text-blue-700"
                   to={`/wiki/${page.replace(" ", "_")}`}

@@ -12,6 +12,7 @@ import TableOfContents from "./components/TableOfContents";
 
 function App() {
   const [session, setSession] = useState(null);
+  const [pageChanged, setPageChanged] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -45,13 +46,25 @@ function App() {
         id="page"
         className="flex flex-row bg-white flex-1 min-h-0 w-full gap-5"
       >
-        <TableOfContents session={session} />
+        <TableOfContents
+          session={session}
+          pageChanged={pageChanged}
+          setPageChanged={setPageChanged}
+        />
         <Routes>
-          <Route path="/new_page" element={<NewPage session={session} />} />
-          <Route path="/wiki/:pageURL" element={<Page session={session} />} />
+          <Route
+            path="/new_page"
+            element={
+              <NewPage session={session} setPageChanged={setPageChanged} />
+            }
+          />
+          <Route
+            path="/wiki/:pageURL"
+            element={<Page session={session} setPageChanged={setPageChanged} />}
+          />
           <Route
             path="/:username/:pageURL"
-            element={<Page session={session} />}
+            element={<Page session={session} setPageChanged={setPageChanged} />}
           />
           <Route path="/explore" element={<Explore />} />
           <Route path="/" element={<Home />} />
