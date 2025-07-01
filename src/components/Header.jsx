@@ -2,7 +2,7 @@ import { supabase } from "../supabaseClient";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function Header({ signOut, session }) {
+export default function Header({ signOut, session }) {
   const navigate = useNavigate();
   const user = session?.user;
   const [username, setUsername] = React.useState("");
@@ -68,5 +68,3 @@ function Header({ signOut, session }) {
     </header>
   );
 }
-
-export default Header;

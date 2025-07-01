@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
 import TableOfContents from "./components/TableOfContents";
 
-function App() {
+export default function App() {
   const [session, setSession] = useState(null);
   const [pageChanged, setPageChanged] = useState(false);
 
@@ -74,5 +74,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

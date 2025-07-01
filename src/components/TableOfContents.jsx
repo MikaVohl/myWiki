@@ -2,7 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
-function TableOfContents({ session, pageChanged, setPageChanged }) {
+export default function TableOfContents({
+  session,
+  pageChanged,
+  setPageChanged,
+}) {
   const user = session?.user;
   const [pagenames, setPagenames] = React.useState([]);
 
@@ -61,5 +65,3 @@ async function getPages(user) {
     return [];
   }
 }
-
-export default TableOfContents;

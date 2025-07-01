@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
-function Home() {
+export default function Home() {
   const { pageName } = useParams();
   const [content, setContent] = React.useState("");
   const url = `/pageStore/myWiki.md`;
@@ -35,5 +35,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

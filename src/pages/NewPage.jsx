@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
-function NewPage({ session, setPageChanged }) {
+export default function NewPage({ session, setPageChanged }) {
   const navigate = useNavigate();
   const user = session?.user;
   const [title, setTitle] = useState("");
@@ -54,5 +54,3 @@ function NewPage({ session, setPageChanged }) {
     </div>
   );
 }
-
-export default NewPage;
