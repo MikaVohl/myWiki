@@ -8,7 +8,7 @@ export default function Explore() {
   React.useEffect(() => {
     (async () => {
       const { data, error } = await supabase
-        .from("pages") // ← exact table name
+        .from("pages")
         .select(
           `
             name,

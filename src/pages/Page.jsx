@@ -7,8 +7,6 @@ import { supabase } from "../supabaseClient";
 
 function Page({ session }) {
   const { username, pageURL } = useParams(); // contains underscores instead of spaces
-  console.log("Page URL:", pageURL);
-  console.log("Username:", username);
   const pageName = useMemo(
     () => (pageURL ? decodeURIComponent(pageURL).replace(/_/g, " ") : ""),
     [pageURL]
@@ -17,6 +15,8 @@ function Page({ session }) {
   const [content, setContent] = React.useState("");
   const [draftContent, setDraftContent] = React.useState("");
   const [isEditing, setIsEditing] = React.useState(false);
+  const user = session?.user;
+  const [ownerID, setOwnerID] = React.useState(null);
 
   useEffect(() => {
     if (pageName) {
@@ -26,24 +26,42 @@ function Page({ session }) {
 
   useEffect(() => {
     if (!pageName) return;
+
     (async () => {
-      const { data, error } = await supabase
+      let ownerIdToUse = user?.id;
+      if (username) {
+        const { data: profile, error: profileErr } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("username", username)
+          .single();
+
+        if (profileErr || !profile) {
+          console.error("Profile not found:", profileErr);
+          window.location.href = "/";
+          return;
+        }
+        setOwnerID(profile.id);
+        ownerIdToUse = profile.id;
+      }
+
+      const { data: page, error: pageErr } = await supabase
         .from("pages")
         .select("content, id")
+        .eq("owner_id", ownerIdToUse)
         .eq("name", pageName)
         .single();
 
-      if (error) {
-        console.error(error);
+      if (pageErr || !page) {
+        console.error("Page not found:", pageErr);
         window.location.href = "/";
         return;
       }
-      if (data) {
-        setContent(data.content ?? "");
-        setPageID(data.id);
-      }
+
+      setContent(page.content ?? "");
+      setPageID(page.id);
     })();
-  }, [pageName]);
+  }, [pageName, username]);
 
   useEffect(() => {
     setDraftContent(content);
@@ -96,27 +114,30 @@ function Page({ session }) {
   return (
     <div className="flex-1 mx-auto p-4 pt-0">
       <div className="flex flex-row justify-between ">
-        <div>
-          <button
-            onClick={() => setIsEditing((e) => !e)}
-            className="text-blue-600 rounded mr-2"
-          >
-            {isEditing ? "Cancel" : "Edit"}
-          </button>
-          {isEditing && (
-            <button onClick={saveEdits} className="text-green-600 rounded">
-              Save
+        {((ownerID === user?.id || !username) && (
+          <div className="flex gap-2">
+            <button
+              onClick={() => setIsEditing((e) => !e)}
+              className="text-blue-600 rounded"
+            >
+              {isEditing ? "Cancel" : "Edit"}
             </button>
-          )}
-        </div>
-        {isEditing && (
-          <button
-            onClick={() => deletePage(pageID)}
-            className="text-red-600 rounded"
-          >
-            Delete Page
-          </button>
-        )}
+
+            {isEditing && (
+              <>
+                <button onClick={saveEdits} className="text-green-600 rounded">
+                  Save
+                </button>
+                <button
+                  onClick={() => deletePage(pageID)}
+                  className="text-red-600 rounded"
+                >
+                  Delete Page
+                </button>
+              </>
+            )}
+          </div>
+        )) || <br />}
       </div>
       {isEditing ? (
         <div className="flex flex-col md:flex-row gap-4 min-h-[60vh]">

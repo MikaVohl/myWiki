@@ -1,10 +1,11 @@
 import React from "react";
 import { supabase } from "../supabaseClient";
 
-function TableOfContents() {
+function TableOfContents({ session }) {
+  const user = session?.user;
   const [pagenames, setPagenames] = React.useState([]);
   React.useEffect(() => {
-    getPages().then((pages) => {
+    getPages(user).then((pages) => {
       setPagenames(pages);
     });
   }, []);
@@ -36,8 +37,11 @@ function TableOfContents() {
   );
 }
 
-async function getPages() {
-  const { data } = await supabase.from("pages").select("name");
+async function getPages(user) {
+  const { data } = await supabase
+    .from("pages")
+    .select("name")
+    .eq("owner_id", user?.id);
   if (data) {
     return data.map((p) => p.name);
   }
