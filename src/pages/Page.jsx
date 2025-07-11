@@ -91,7 +91,7 @@ export default function Page({ session, setPageChanged }) {
 
       if (draftName !== pageName) {
         const newURL = encodeURIComponent(draftName.replace(/ /g, "_"));
-        navigate(`/${username ?? ""}/${newURL}`);
+        navigate(`/${username ?? "wiki"}/${newURL}`);
       }
     } catch (err) {
       console.error("Network / client error:", err);
