@@ -11,7 +11,10 @@ export default function TableOfContents({
   const [pagenames, setPagenames] = React.useState([]);
 
   React.useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setPagenames([]);
+      return;
+    }
     async function fetchPages() {
       const pages = await getPages(user);
       setPagenames(pages);
@@ -23,27 +26,35 @@ export default function TableOfContents({
   return (
     <div id="toc" className="w-52 p-5 pt-8">
       <nav className="flex flex-col justify-between static">
-        <div>
-          <h2 className="text-2xl">My Pages</h2>
-          <ul>
-            {pagenames.map((page) => (
-              <li key={page} className="my-3 leading-5">
-                <Link
-                  className="text-blue-600 hover:underline hover:text-blue-700"
-                  to={`/wiki/${page.replace(" ", "_")}`}
-                >
-                  {page}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <Link
-          to="/new_page"
-          className="bg-gray-100 p-2 rounded mt-3 text-center hover:bg-gray-200"
-        >
-          Create New Page
-        </Link>
+        {user ? (
+          <>
+            <div>
+              <h2 className="text-2xl">My Pages</h2>
+              <ul>
+                {pagenames.map((page) => (
+                  <li key={page} className="my-3 leading-5">
+                    <Link
+                      className="text-blue-600 hover:underline hover:text-blue-700"
+                      to={`/wiki/${page.replace(" ", "_")}`}
+                    >
+                      {page}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Link
+              to="/new_page"
+              className="bg-gray-100 p-2 rounded mt-3 text-center hover:bg-gray-200"
+            >
+              Create New Page
+            </Link>
+          </>
+        ) : (
+          <div>
+            <p className="text-sm italic text-gray-600">Log in to see your pages.</p>
+          </div>
+        )}
       </nav>
     </div>
   );

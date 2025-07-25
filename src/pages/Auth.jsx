@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 export default function Auth() {
@@ -9,6 +10,14 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const qMode = params.get("mode");
+    if (qMode === "signUp") setMode("signUp");
+    if (qMode === "signIn") setMode("signIn");
+  }, [location.search]);
 
   const toggleMode = () => {
     setMode((m) => (m === "signIn" ? "signUp" : "signIn"));
@@ -78,7 +87,7 @@ export default function Auth() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <main className="min-h-screen min-w-screen flex items-center justify-center bg-gray-50 px-4">
       <section className="w-full max-w-md rounded-md border border-gray-200 bg-white p-8 shadow-sm">
         <header className="mb-6 text-center select-none">
           <img

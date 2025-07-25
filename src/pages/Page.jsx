@@ -21,6 +21,10 @@ export default function Page({ session, setPageChanged }) {
   const [ownerID, setOwnerID] = React.useState(null);
 
   useEffect(() => {
+    if (!user && !username) navigate("/auth?mode=signIn");
+  }, [user, username, navigate]);
+
+  useEffect(() => {
     if (pageName) {
       document.title = `myWiki - ${pageName}`;
     }
@@ -73,7 +77,7 @@ export default function Page({ session, setPageChanged }) {
 
   const saveEdits = async () => {
     const activeUser = session?.user;
-    if (!activeUser) return console.error("No active session - cannot save");
+    if (!activeUser) return navigate("/auth?mode=signIn");
 
     try {
       const { error } = await supabase
@@ -100,7 +104,7 @@ export default function Page({ session, setPageChanged }) {
 
   const deletePage = async (id) => {
     const activeUser = session?.user;
-    if (!activeUser) return console.error("No active session - cannot delete");
+    if (!activeUser) return navigate("/auth?mode=signIn");
 
     try {
       const { error } = await supabase
@@ -121,7 +125,7 @@ export default function Page({ session, setPageChanged }) {
   return (
     <div className="flex-1 mx-auto p-4 pt-0 mb-20">
       <div className="flex justify-between items-center">
-        {((ownerID === user?.id || !username) && (
+        {((user && (ownerID === user?.id || !username)) && (
           <div className="flex gap-3">
             <button
               onClick={() => setIsEditing((e) => !e)}

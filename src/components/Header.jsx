@@ -48,21 +48,40 @@ export default function Header({ signOut, session }) {
         </Link>
       </nav>
       <div className="flex flex-row items-center gap-2">
-        <div className="flex items-center">
-          <i
-            className="material-symbols-outlined text-gray-800"
-            style={{ fontVariationSettings: "'FILL' 1", fontSize: "1.3rem" }}
-          >
-            person
-          </i>
-          {username}
-        </div>
-        <button
-          onClick={() => signOut()}
-          className="rounded p-2 hover:bg-gray-100"
-        >
-          Sign Out
-        </button>
+        {user ? (
+          <>
+            <div className="flex items-center">
+              <i
+                className="material-symbols-outlined text-gray-800"
+                style={{ fontVariationSettings: "'FILL' 1", fontSize: "1.3rem" }}
+              >
+                person
+              </i>
+              {username}
+            </div>
+            <button
+              onClick={() => signOut()}
+              className="rounded p-2 text-blue-600 hover:underline"
+            >
+              Sign Out
+            </button>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/auth?mode=signIn"
+              className="rounded p-2 text-blue-600 hover:underline"
+            >
+              Log In
+            </Link>
+            <Link
+              to="/auth?mode=signUp"
+              className="rounded p-2 text-blue-600 hover:underline"
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

@@ -28,9 +28,6 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (!session) {
-    return <Auth />;
-  }
 
   async function handleSignOut() {
     const { error } = await supabase.auth.signOut();
@@ -41,36 +38,46 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white items-center max-w-7xl mx-auto px-8">
-      <Header signOut={handleSignOut} session={session} />
-      <div
-        id="page"
-        className="flex flex-row bg-white flex-1 min-h-0 w-full gap-5"
-      >
-        <TableOfContents
-          session={session}
-          pageChanged={pageChanged}
-          setPageChanged={setPageChanged}
-        />
         <Routes>
+          <Route path="/auth" element={<Auth />} />
           <Route
-            path="/new_page"
+            path="*"
             element={
-              <NewPage session={session} setPageChanged={setPageChanged} />
+              <>
+              <Header signOut={handleSignOut} session={session} />
+                <div
+                  id="page"
+                  className="flex flex-row bg-white flex-1 min-h-0 w-full gap-5"
+                >
+                  <TableOfContents
+                    session={session}
+                    pageChanged={pageChanged}
+                    setPageChanged={setPageChanged}
+                  />
+                  <Routes>
+                    <Route
+                      path="/new_page"
+                      element={
+                        <NewPage session={session} setPageChanged={setPageChanged} />
+                      }
+                    />
+                    <Route
+                      path="/wiki/:pageURL"
+                      element={<Page session={session} setPageChanged={setPageChanged} />}
+                    />
+                    <Route
+                      path="/:username/:pageURL"
+                      element={<Page session={session} setPageChanged={setPageChanged} />}
+                    />
+                    <Route path="/explore" element={<Explore />} />
+                    <Route path="/" element={<Home />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </div>
+              </>
             }
           />
-          <Route
-            path="/wiki/:pageURL"
-            element={<Page session={session} setPageChanged={setPageChanged} />}
-          />
-          <Route
-            path="/:username/:pageURL"
-            element={<Page session={session} setPageChanged={setPageChanged} />}
-          />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </div>
     </div>
   );
 }
