@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 
 export default function Auth() {
@@ -11,6 +11,7 @@ export default function Auth() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -18,6 +19,20 @@ export default function Auth() {
     if (qMode === "signUp") setMode("signUp");
     if (qMode === "signIn") setMode("signIn");
   }, [location.search]);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) navigate(location.state?.from || "/");
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") navigate(location.state?.from || "/");
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate, location.state]);
 
   const toggleMode = () => {
     setMode((m) => (m === "signIn" ? "signUp" : "signIn"));

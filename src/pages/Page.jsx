@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
@@ -7,6 +7,7 @@ import { supabase } from "../supabaseClient";
 
 export default function Page({ session, setPageChanged }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { username, pageURL } = useParams();
   const pageName = useMemo(
     () => (pageURL ? decodeURIComponent(pageURL).replace(/_/g, " ") : ""),
@@ -21,8 +22,9 @@ export default function Page({ session, setPageChanged }) {
   const [ownerID, setOwnerID] = React.useState(null);
 
   useEffect(() => {
-    if (!user && !username) navigate("/auth?mode=signIn");
-  }, [user, username, navigate]);
+    if (!user && !username)
+      navigate("/auth?mode=signIn", { state: { from: location.pathname } });
+  }, [user, username, navigate, location.pathname]);
 
   useEffect(() => {
     if (pageName) {
@@ -77,7 +79,8 @@ export default function Page({ session, setPageChanged }) {
 
   const saveEdits = async () => {
     const activeUser = session?.user;
-    if (!activeUser) return navigate("/auth?mode=signIn");
+    if (!activeUser)
+      return navigate("/auth?mode=signIn", { state: { from: location.pathname } });
 
     try {
       const { error } = await supabase
@@ -104,7 +107,8 @@ export default function Page({ session, setPageChanged }) {
 
   const deletePage = async (id) => {
     const activeUser = session?.user;
-    if (!activeUser) return navigate("/auth?mode=signIn");
+    if (!activeUser)
+      return navigate("/auth?mode=signIn", { state: { from: location.pathname } });
 
     try {
       const { error } = await supabase

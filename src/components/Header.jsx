@@ -1,9 +1,10 @@
 import { supabase } from "../supabaseClient";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Header({ signOut, session }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = session?.user;
   const [username, setUsername] = React.useState("");
 
@@ -70,12 +71,14 @@ export default function Header({ signOut, session }) {
           <>
             <Link
               to="/auth?mode=signIn"
+              state={{ from: location.pathname }}
               className="rounded p-2 text-blue-600 hover:underline"
             >
               Log In
             </Link>
             <Link
               to="/auth?mode=signUp"
+              state={{ from: location.pathname }}
               className="rounded p-2 text-blue-600 hover:underline"
             >
               Sign Up
